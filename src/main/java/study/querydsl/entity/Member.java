@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // 기본 생성자 막고 싶은데 JPA 스펙상 protected 로 열어둠
 @ToString(of = {"id", "username", "age"})
+@Setter
 public class Member {
 
     @Id
@@ -16,6 +17,7 @@ public class Member {
     private Long id;
     private String username;
     private int age;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
