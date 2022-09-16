@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
 import study.querydsl.dto.QMemberDto;
@@ -547,5 +548,52 @@ public class QuerydslBasicTest {
     }
 
     // usernameEq , ageEq 를 메서드로 빼서 쓸때 usernameEq, ageEq 를 조립해서 사용할수 있다.
+
+    @Test
+    // Test 에선 Rollback 해버리기 때문에 Commit 해주면 DB 에서 확인가능.
+    @Commit
+    public void bulkUpdate() {
+        long count = queryFactory.update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+        // 위의 쿼리를 날리면 영속성 컨텍스트를 무시하고 바로 DB 를 업데이트 한다.
+        // 1차캐시와 DB 의 정보가 다름.
+        // 따라서 영속성 컨텍스트 초기화.
+
+        em.flush();
+        em.clear();
+
+        List<Member> result = queryFactory.selectFrom(member).fetch();
+
+        for (Member member1 : result) {
+            System.out.println("member1 = " + member1);
+        }
+    }
+
+    @Test
+    public void sqlFunction() {
+        List<String> result = queryFactory.select(Expressions.stringTemplate(
+                "function('regexp_replace',{0},{1},{2})",
+                        member.username, "member", "M"))
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    public void sqlFunction2() {
+        List<String> result = queryFactory.select(member.username).from(member)
+//                .where(member.username.eq(Expressions.stringTemplate("function('lower',{0})", member.username)))
+                .where(member.username.eq(member.username.lower()))
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
 
 }
