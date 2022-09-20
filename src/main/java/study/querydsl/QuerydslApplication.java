@@ -14,10 +14,4 @@ public class QuerydslApplication {
 		SpringApplication.run(QuerydslApplication.class, args);
 	}
 
-	@Bean
-	JPAQueryFactory jpaQueryFactory(EntityManager em) {
-		this.em = em;
-		return new JPAQueryFactory(em);
-	}
-
 }
