@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+// 어떤 properties 사용할지 지정
 @Profile("local")
 @Component
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class InitMember {
         initMemberService.init();
     }
 
+    @Component
     static class InitMemberService {
 
         @PersistenceContext
@@ -37,7 +39,7 @@ public class InitMember {
 
             for (int i = 0; i < 100; i++) {
                 Team selectedTeam = i % 2 == 0 ? teamA : teamB;
-                em.persist(new Member("memer"+i,i,selectedTeam));
+                em.persist(new Member("member"+i,i,selectedTeam));
             }
         }
     }
