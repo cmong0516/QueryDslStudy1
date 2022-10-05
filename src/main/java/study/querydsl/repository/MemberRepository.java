@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
-    // select m from member m where m.username
+
     List<Member> findByUsername(String username);
 }

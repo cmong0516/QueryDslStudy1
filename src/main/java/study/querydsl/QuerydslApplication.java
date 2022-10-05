@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 @SpringBootApplication
 public class QuerydslApplication {
 
+	private EntityManager em;
+
 	public static void main(String[] args) {
 		SpringApplication.run(QuerydslApplication.class, args);
 	}
