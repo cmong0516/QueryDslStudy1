@@ -55,6 +55,7 @@ class MemberRepositoryTest {
         Member member2 = new Member("member2", 20, teamA);
         Member member3 = new Member("member3", 30, teamB);
         Member member4 = new Member("member4", 40, teamB);
+
         em.persist(member1);
         em.persist(member2);
         em.persist(member3);
